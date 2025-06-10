@@ -12,42 +12,46 @@ function App() {
 
   useEffect(
     function () {
-      async function temp() {
-        try {
-          const res = await fetch(
-            `http://www.omdbapi.com/?apikey=${key}&s=${query}`
-          );
+      const timer = setTimeout(() => {
+        async function temp() {
+          try {
+            const res = await fetch(
+              `http://www.omdbapi.com/?apikey=${key}&s=${query}`
+            );
 
-          if (!res.ok) {
-            throw new Error("Something went wrong with error");
-          }
+            if (!res.ok) {
+              throw new Error("Something went wrong with error");
+            }
 
-          const data = await res.json();
-          console.log(data);
+            const data = await res.json();
+            console.log(data);
 
-          if (data.Response === "False") {
-            throw new Error("There is no such Movie");
-          }
-          console.log("hola");
+            if (data.Response === "False") {
+              throw new Error("There is no such Movie");
+            }
+            console.log("hola");
 
-          console.log(data.Search);
+            console.log(data.Search);
 
-          if (!data.Search || query.length < 3) {
-            setMovies([]);
-            console.log("setting to empty array");
-          } else {
-            setMovies(data.Search);
+            if (!data.Search || query.length < 3) {
+              setMovies([]);
+              console.log("setting to empty array");
+            } else {
+              setMovies(data.Search);
+              setLoading(true);
+              setErrorMessage("");
+            }
+          } catch (err) {
+            setErrorMessage(err.message);
+          } finally {
             setLoading(true);
-            setErrorMessage("");
           }
-        } catch (err) {
-          setErrorMessage(err.message);
-        } finally {
-          setLoading(true);
         }
-      }
-      temp();
+        temp();
+      }, 500);
+      return () => clearTimeout(timer);
     },
+
     [query]
   );
 

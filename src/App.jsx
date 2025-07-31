@@ -3,7 +3,7 @@ import Loader from "./components/Loader.jsx";
 
 import "./App.css";
 import ErrorMessage from "./components/ErrorMessage.jsx";
-let kEy = "1445ada9";
+let key = "1445ada9";
 function App() {
   const [movies, setMovies] = useState([]);
   const [query, setQuery] = useState("");
